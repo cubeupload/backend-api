@@ -15,7 +15,7 @@ class UserTableSeeder extends Seeder
             'name' => 'CubeAdmin',
             'email' => 'admin@cubeupload.com',
             'password' => app('hash')->make('cubeupload'),
-            'remember_token' => str_random(10),
+            'registration_ip' => '127.0.0.1'
         ]);
     }
 }
