@@ -15,8 +15,41 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        Gate::define('create-user', function($user, $obj){
+        Gate::define('modify-album', function($user, $album){
+            if ($user->isModerator())
+                return true;
 
+            return $album->user_id == $user->id;
+        });
+
+        Gate::define('modify-ban', function($user, $ban){
+            return $user->isModerator();
+        });
+
+        Gate::define('modify-image', function($user, $image){
+            if ($user->isModerator())
+                return true;
+
+            return $image->user_id == $user->id;
+        });
+
+        Gate::define('modify-message', function($user, $message){
+            return $user->isModerator();
+        });
+
+        Gate::define('modify-session', function($user, $session){
+            return $user->isAdmin();
+        });
+
+        Gate::define('modify-user', function($user, $usr){
+            if ($user->isModerator())
+                return true;
+            
+            return $user->id == $usr->id;
+        });
+
+        Gate::define('delete-user', function($user, $usr){
+            return $user->isAdmin();
         });
     }
 
