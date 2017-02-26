@@ -53,4 +53,24 @@ class User extends Model implements
     {
         return [];
     }
+
+    /**
+     * Returns true if the user has administrator capability (level 9).
+     *
+     * @return boolean
+     */
+    public function isAdmin()
+    {
+        return $this->access_level == 9;
+    }
+
+    /**
+     * Returns true if the user has moderator capability (level >= 5).
+     *
+     * @return boolean
+     */
+    public function isModerator()
+    {
+        return $this->access_level >= 5;
+    }
 }

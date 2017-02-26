@@ -15,7 +15,9 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        Gate::define('create-user', function($user, $obj){
+
+        });
     }
 
     /**
