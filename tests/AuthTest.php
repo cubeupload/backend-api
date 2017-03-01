@@ -1,10 +1,11 @@
 <?php
 
 use App\Models\User;
-use Laravel\Lumen\Testing\DatabaseTransactions;
+use Laravel\Lumen\Testing\DatabaseMigrations;
 
 class AuthTest extends TestCase
 {
+    use DatabaseMigrations;
     /**
      * A basic test example.
      *
@@ -12,9 +13,11 @@ class AuthTest extends TestCase
      */
     public function testJWTAuth()
     {
+        factory('App\Models\User', 'test_admin')->create();
+
         $this->json('POST', '/api/auth/login', [
-            'email' => 'admin@cubeupload.com',
-            'password' => 'cubeupload'
+            'email' => 'testadmin@cubeupload.com',
+            'password' => 'cube_test_admin'
         ])->seeJson([
             "message" => "token_generated"
         ]);
@@ -22,7 +25,11 @@ class AuthTest extends TestCase
 
     public function testCapability()
     {
-        $adminUser = User::whereEmail('admin@cubeupload.com')->first();
+        factory('App\Models\User', 'test_admin')->create();
+        factory('App\Models\User', 'test_mod')->create();
+        factory('App\Models\User', 'test_user')->create();
+
+        $adminUser = User::whereEmail('testadmin@cubeupload.com')->first();
         $this->assertTrue($adminUser->isAdmin());
         $this->assertTrue($adminUser->isModerator());
 

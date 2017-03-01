@@ -15,11 +15,12 @@ class CreateImagesTable extends Migration
     {
         Schema::create('images', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id');
+            $table->integer('creator_id');
             $table->integer('album_id');
-            $table->string('name');
-            $table->string('description');
+            $table->string('name', 50);
+            $table->string('description', 200);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

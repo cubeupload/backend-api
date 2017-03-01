@@ -11,9 +11,32 @@
 |
 */
 
-$factory->define(App\User::class, function ($faker) {
+$factory->defineAs('App\Models\User', 'test_admin', function($faker){
     return [
-        'name' => $faker->name,
-        'email' => $faker->email,
+        'name' => 'Test Admin',
+        'email' => 'testadmin@cubeupload.com',
+        'password' => app('hash')->make('cube_test_admin'),
+        'registration_ip' => '127.0.0.1',
+        'access_level' => 9
+    ];
+});
+
+$factory->defineAs('App\Models\User', 'test_mod', function($faker){
+    return [
+        'name' => 'Test Moderator',
+        'email' => 'testmod@cubeupload.com',
+        'password' => app('hash')->make('cube_test_mod'),
+        'registration_ip' => '127.0.0.1',
+        'access_level' => 5
+    ];
+});
+
+$factory->defineAs('App\Models\User', 'test_user', function($faker){
+    return [
+        'name' => 'Test User',
+        'email' => 'testuser@cubeupload.com',
+        'password' => app('hash')->make('cube_test_user'),
+        'registration_ip' => '127.0.0.1',
+        'access_level' => 1
     ];
 });

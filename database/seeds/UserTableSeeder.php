@@ -11,28 +11,15 @@ class UserTableSeeder extends Seeder
      */
     public function run()
     {
+        $admin_password = str_random(8);
         DB::table('users')->insert([
             'name' => 'CubeAdmin',
             'email' => 'admin@cubeupload.com',
-            'password' => app('hash')->make('cubeupload'),
+            'password' => app('hash')->make($admin_password),
             'registration_ip' => '127.0.0.1',
             'access_level' => 9
         ]);
 
-        DB::table('users')->insert([
-            'name' => 'Test Moderator',
-            'email' => 'testmod@cubeupload.com',
-            'password' => app('hash')->make(str_random(12)),
-            'registration_ip' => '127.0.0.1',
-            'access_level' => 5
-        ]);
-
-        DB::table('users')->insert([
-            'name' => 'Test User',
-            'email' => 'testuser@cubeupload.com',
-            'password' => app('hash')->make(str_random(12)),
-            'registration_ip' => '127.0.0.1',
-            'access_level' => 1
-        ]);
+        echo "CubeAdmin user created with password ", $admin_password, "\n";
     }
 }

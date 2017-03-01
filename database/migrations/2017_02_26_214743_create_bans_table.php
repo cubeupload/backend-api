@@ -15,13 +15,14 @@ class CreateBansTable extends Migration
     {
         Schema::create('bans', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id');
-            $table->string('reason');
-            $table->string('notes');
+            $table->integer('creator_id');
+            $table->string('reason', 200);
+            $table->string('notes', 200);
             $table->enum('type', ['ip', 'user']);
-            $table->integer('banned_user_id');
-            $table->string('banned_ip');
+            $table->integer('recipient_id');
+            $table->string('banned_ip', 16);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

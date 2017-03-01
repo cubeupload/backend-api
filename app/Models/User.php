@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Traits\CreatorRelation;
+
 use Illuminate\Auth\Authenticatable;
 use Laravel\Lumen\Auth\Authorizable;
 use Illuminate\Database\Eloquent\Model;
@@ -72,5 +74,50 @@ class User extends Model implements
     public function isModerator()
     {
         return $this->access_level >= 5;
+    }
+
+    /**
+     * Abuse Reports the user has raised.
+     *
+     **/
+    public function abuse_reports()
+    {
+        return $this->hasMany('App\Models\AbuseReport', 'creator_id');
+    }
+
+    /**
+     * Abuse Reports the user has dealt with
+     *
+     **/
+    public function actioned_reports()
+    {
+        return $this->hasMany('App\Models\AbuseReport', 'actioner_id');
+    }
+
+    /**
+     * Albums created by the user
+     *
+     **/
+    public function albums()
+    {
+        return $this->hasMany('App\Models\Album', 'creator_id');
+    }
+
+    /**
+     * Bans applied to the user
+     *
+     **/
+    public function bans()
+    {
+        return $this->hasMany('App\Models\Ban', 'recipient_id');
+    }
+
+    /**
+     * Bans applied by this user
+     *
+     **/
+    public function applied_bans()
+    {
+        return $this->hasMany('App\Models\Ban', 'creator_id');
     }
 }
