@@ -11,7 +11,7 @@
 |
 */
 
-$factory->defineAs('App\Models\User', 'test_admin', function($faker){
+$factory->defineAs('App\Models\User', 'admin', function($faker){
     return [
         'name' => 'Test Admin',
         'email' => 'testadmin@cubeupload.com',
@@ -21,7 +21,7 @@ $factory->defineAs('App\Models\User', 'test_admin', function($faker){
     ];
 });
 
-$factory->defineAs('App\Models\User', 'test_mod', function($faker){
+$factory->defineAs('App\Models\User', 'moderator', function($faker){
     return [
         'name' => 'Test Moderator',
         'email' => 'testmod@cubeupload.com',
@@ -31,12 +31,49 @@ $factory->defineAs('App\Models\User', 'test_mod', function($faker){
     ];
 });
 
-$factory->defineAs('App\Models\User', 'test_user', function($faker){
+$factory->define('App\Models\User', function($faker){
     return [
         'name' => 'Test User',
         'email' => 'testuser@cubeupload.com',
         'password' => app('hash')->make('cube_test_user'),
         'registration_ip' => '127.0.0.1',
         'access_level' => 1
+    ];
+});
+
+$factory->define('App\Models\Album', function($faker){
+    return [
+        'name' => 'Test Album',
+        'slug' => 'test-album',
+        'description' => 'New album'
+    ];
+});
+
+$factory->define('App\Models\Image', function($faker){
+    return [
+        'name' => 'Test Image',
+        'description' => 'Test Description'
+    ];
+});
+
+$factory->define('App\Models\Ban', function($faker){
+    return [
+        'reason' => 'Misconduct',
+        'notes' => 'Uploading bad content'
+    ];
+});
+
+$factory->define('App\Models\Message', function($faker){
+    return [
+        'title' => 'This is a test message',
+        'text' => 'I would like to suggest you avoid procrastination. That is all.'
+    ];
+});
+
+$factory->defineAs('App\Models\Message', 'read', function($faker){
+    return [
+        'title' => 'This is a test message',
+        'text' => 'I would like to suggest you avoid procrastination. That is all.',
+        'status' => 'read'
     ];
 });

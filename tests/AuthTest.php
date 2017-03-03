@@ -13,7 +13,7 @@ class AuthTest extends TestCase
      */
     public function testJWTAuth()
     {
-        factory('App\Models\User', 'test_admin')->create();
+        factory('App\Models\User', 'admin')->create();
 
         $this->json('POST', '/api/auth/login', [
             'email' => 'testadmin@cubeupload.com',
@@ -25,9 +25,9 @@ class AuthTest extends TestCase
 
     public function testCapability()
     {
-        factory('App\Models\User', 'test_admin')->create();
-        factory('App\Models\User', 'test_mod')->create();
-        factory('App\Models\User', 'test_user')->create();
+        factory('App\Models\User', 'admin')->create();
+        factory('App\Models\User', 'moderator')->create();
+        factory('App\Models\User')->create();
 
         $adminUser = User::whereEmail('testadmin@cubeupload.com')->first();
         $this->assertTrue($adminUser->isAdmin());

@@ -120,4 +120,22 @@ class User extends Model implements
     {
         return $this->hasMany('App\Models\Ban', 'creator_id');
     }
+
+    /**
+     * Images uploaded by the user
+     *
+     **/
+    public function images()
+    {
+        return $this->hasMany('App\Models\Image', 'creator_id');
+    }
+
+    /**
+     * Messages posted by the user
+     *
+     **/
+    public function messages()
+    {
+        return $this->hasMany('App\Models\Message', 'creator_id');
+    }
 }
