@@ -64,4 +64,21 @@ class UserTest extends TestCase
 
         $this->assertEquals(1, $message->creator_id);
     }
+
+    public function testUserAbuseReportRelationship()
+    {
+        factory('App\Models\User')->create();
+        factory('App\Models\User', 'moderator')->create();
+        factory('App\Models\AbuseReport')->create();
+
+        $user = User::find(1);
+        $mod = User::find(2);
+        $report = AbuseReport::find(1);
+
+        $user->abuse_reports()->save($report);
+        $mod->actioned_reports()->save($report);
+
+        $this->assertEquals(1, $report->creator_id);
+        $this->assertEquals(2, $report->actioner_id);
+    }
 }
