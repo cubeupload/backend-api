@@ -72,7 +72,18 @@ class UserPolicy
      */
     public function delete(User $user, User $target)
     {
-        return $user->isAdmin();
+        // Non-admins cannot delete users (duh)
+        if (!$user->isAdmin())
+            return false;
 
+        // Admins cannot delete themselves
+        if ($user->id == $target->id)
+            return false;
+
+        // Admins cannot delete other mods or admins (have to demote first)
+        if ($target->isModerator())
+            return false;
+
+        return true;
     }
 }

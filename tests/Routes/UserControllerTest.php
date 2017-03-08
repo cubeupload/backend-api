@@ -94,4 +94,30 @@ class UserControllerTest extends TestCase
 
         $this->actingAsApiUser($mod)->get('/api/users/2')->seeJson(['id' => 2]);
     }
+
+    public function testUserCannotDelete()
+    {
+        $user = factory(User::class)->create();
+        $other_user = factory(User::class)->create();
+
+        $this->actingAsApiUser($user)->delete('/api/users/2')->seeStatusCode(403);
+        $this->refreshApplication();
+        $this->actingAsApiUser($user)->delete('/api/users/1')->seeStatusCode(403);
+    }
+
+    public function testAdminCannotDeleteSelf()
+    {
+        $admin = factory(User::class, 'admin')->create();
+        
+        $this->actingAsApiUser($admin)->delete('/api/users/1')->seeStatusCode(403);
+    }
+
+    public function testAdminCanDeleteOther()
+    {
+        $admin = factory(User::class, 'admin')->create();
+        $user = factory(User::class)->create();
+
+        $this->actingAsApiUser($admin)->delete('/api/users/2')->assertResponseOk();
+        $this->notSeeInDatabase('users', ['id' => 2]);
+    }
 }

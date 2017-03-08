@@ -69,10 +69,7 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user = User::find($id);
-
-        if ($user == null)
-            abort(404);
+        $user = User::findOrFail($id);
 
         if ($request->user()->cannot('update', $user))
             abort(403);
@@ -87,8 +84,14 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        //
+        $user = User::findOrFail($id);
+
+        if ($request->user()->cannot('delete', $user))
+            abort(403);
+
+        $user->delete();
+        return 'Deleted';
     }
 }
