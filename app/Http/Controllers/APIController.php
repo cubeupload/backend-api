@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Laravel\Lumen\Application;
 use Illuminate\Http\JsonResponse;
 
-class APIController extends Controller
+class ApiController extends Controller
 {
     /**
      * Get root url.

@@ -38,5 +38,6 @@ $api->version('v1', function ($api) {
             'uses' => 'App\Http\Controllers\Auth\AuthController@deleteInvalidate',
             'as' => 'api.auth.invalidate'
         ]);
+        $api->resource('/users', 'App\Http\Controllers\UserController');
     });
 });

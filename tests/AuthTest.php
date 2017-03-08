@@ -2,25 +2,23 @@
 
 use App\Models\User;
 use Laravel\Lumen\Testing\DatabaseMigrations;
+#use LoginTrait;
 
 class AuthTest extends TestCase
 {
     use DatabaseMigrations;
+    use \LoginTrait;
+
     /**
      * A basic test example.
      *
      * @return void
      */
-    public function testJWTAuth()
+    public function testAuthentication()
     {
         factory('App\Models\User', 'admin')->create();
 
-        $this->json('POST', '/api/auth/login', [
-            'email' => 'testadmin@cubeupload.com',
-            'password' => 'cube_test_admin'
-        ])->seeJson([
-            "message" => "token_generated"
-        ]);
+        $this->assertLogin('testadmin@cubeupload.com', 'cube_test_admin');
     }
 
     public function testCapability()
@@ -29,15 +27,15 @@ class AuthTest extends TestCase
         factory('App\Models\User', 'moderator')->create();
         factory('App\Models\User')->create();
 
-        $adminUser = User::whereEmail('testadmin@cubeupload.com')->first();
+        $adminUser = User::find(1);
         $this->assertTrue($adminUser->isAdmin());
         $this->assertTrue($adminUser->isModerator());
 
-        $modUser = User::whereEmail('testmod@cubeupload.com')->first();
+        $modUser = User::find(2);
         $this->assertFalse($modUser->isAdmin());
         $this->assertTrue($modUser->isModerator());
 
-        $testUser = User::whereEmail('testuser@cubeupload.com')->first();
+        $testUser = User::find(3);
         $this->assertFalse($testUser->isAdmin());
         $this->assertFalse($testUser->isModerator());
     }

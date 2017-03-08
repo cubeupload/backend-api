@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
+use App\Policies\UserPolicy;
+
 class AuthServiceProvider extends ServiceProvider
 {
     /**
@@ -15,42 +17,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        Gate::define('modify-album', function($user, $album){
-            if ($user->isModerator())
-                return true;
 
-            return $album->user_id == $user->id;
-        });
-
-        Gate::define('modify-ban', function($user, $ban){
-            return $user->isModerator();
-        });
-
-        Gate::define('modify-image', function($user, $image){
-            if ($user->isModerator())
-                return true;
-
-            return $image->user_id == $user->id;
-        });
-
-        Gate::define('modify-message', function($user, $message){
-            return $user->isModerator();
-        });
-
-        Gate::define('modify-session', function($user, $session){
-            return $user->isAdmin();
-        });
-
-        Gate::define('modify-user', function($user, $usr){
-            if ($user->isModerator())
-                return true;
-            
-            return $user->id == $usr->id;
-        });
-
-        Gate::define('delete-user', function($user, $usr){
-            return $user->isAdmin();
-        });
     }
 
     /**
@@ -70,5 +37,9 @@ class AuthServiceProvider extends ServiceProvider
                 return User::where('api_token', $request->input('api_token'))->first();
             }
         });
+
+        // Register the authorisation policies for our data models.
+        Gate::policy(User::class, UserPolicy::class);
+        
     }
 }

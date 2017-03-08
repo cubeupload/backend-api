@@ -61,8 +61,9 @@ class UserTest extends TestCase
         $message = Message::find(1);
 
         $user->messages()->save($message);
-
+        
         $this->assertEquals(1, $message->creator_id);
+        $this->assertEquals(1, count($user->messages));
     }
 
     public function testUserAbuseReportRelationship()

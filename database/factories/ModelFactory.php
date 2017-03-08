@@ -33,10 +33,10 @@ $factory->defineAs('App\Models\User', 'moderator', function($faker){
 
 $factory->define('App\Models\User', function($faker){
     return [
-        'name' => 'Test User',
-        'email' => 'testuser@cubeupload.com',
+        'name' => $faker->name,
+        'email' => $faker->email,
         'password' => app('hash')->make('cube_test_user'),
-        'registration_ip' => '127.0.0.1',
+        'registration_ip' => $faker->ipv4,
         'access_level' => 1
     ];
 });

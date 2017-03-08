@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use \Gate;
+
 use App\Models\Traits\CreatorRelation;
 
 use Illuminate\Auth\Authenticatable;
@@ -137,5 +139,10 @@ class User extends Model implements
     public function messages()
     {
         return $this->hasMany('App\Models\Message', 'creator_id');
+    }
+
+    public function getMetadataAttribute($metadata)
+    {
+        return json_decode($metadata);
     }
 }
