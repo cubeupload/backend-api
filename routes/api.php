@@ -38,6 +38,9 @@ $api->version('v1', function ($api) {
             'uses' => 'App\Http\Controllers\Auth\AuthController@deleteInvalidate',
             'as' => 'api.auth.invalidate'
         ]);
+
+        // Resource controllers
         $api->resource('/users', 'App\Http\Controllers\UserController');
+        $api->resource('/images', 'App\Http\Controllers\ImageController');
     });
 });
