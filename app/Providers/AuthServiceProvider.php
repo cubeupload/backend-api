@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
 use App\Policies\UserPolicy;
+use App\Policies\ImagePolicy;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -40,6 +41,7 @@ class AuthServiceProvider extends ServiceProvider
 
         // Register the authorisation policies for our data models.
         Gate::policy(User::class, UserPolicy::class);
+        Gate::policy(Image::class, ImagePolicy::class);
         
     }
 }

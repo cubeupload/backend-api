@@ -14,7 +14,28 @@ class ImageController extends Controller
      */
     public function index(Request $request)
     {
-        //
+        $limit = $request->input('limit', 30);
+
+        // Request is asking for all user images (mod/admin)
+        if ($request->input('all_users'))
+        {
+            if ($request->user()->cannot('list-all', Image::class))
+                abort(403);
+            else
+            {
+                return Image::paginate($limit);
+            }
+        }
+        // Normal request for authed user's images.
+        else
+        {
+            if ($request->user()->cannot('list', Image::class))
+                abort(403);
+            else
+            {
+                return $request->user()->images()->paginate($limit);
+            }
+        }
     }
 
     /**

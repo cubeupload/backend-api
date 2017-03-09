@@ -19,6 +19,7 @@ class CreateImagesTable extends Migration
             $table->integer('album_id');
             $table->string('name', 50);
             $table->string('description', 200);
+            $table->string('filename', 100);
             $table->timestamps();
             $table->softDeletes();
         });

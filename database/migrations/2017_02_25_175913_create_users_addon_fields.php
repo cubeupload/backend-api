@@ -15,7 +15,7 @@ class CreateUsersAddonFields extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('registration_ip', 16)->nullable()->after('password');
-            $table->integer('access_level')->default(0)->after('registration_ip');
+            $table->integer('access_level')->default(1)->after('registration_ip');
             $table->text('metadata')->after('access_level');
             $table->softDeletes();
         });

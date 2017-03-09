@@ -145,4 +145,9 @@ class User extends Model implements
     {
         return json_decode($metadata);
     }
+
+    public function setPasswordAttribute($password)
+    {
+        $this->attributes['password'] = app('hash')->make($password);
+    }
 }

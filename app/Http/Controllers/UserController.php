@@ -36,6 +36,7 @@ class UserController extends Controller
             abort(403);
 
         $fields = $request->all();
+        $fields['registration_ip'] = $request->ip();
         $new_user = User::create($fields);
         $new_user->save();
         return $new_user;
