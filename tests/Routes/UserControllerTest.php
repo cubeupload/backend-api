@@ -6,7 +6,7 @@ use Laravel\Lumen\Testing\DatabaseMigrations;
 class UserControllerTest extends TestCase
 {
     use DatabaseMigrations;
-    use LoginTrait;
+    use TestHelpersTrait;
 
     /**
      * A basic test example.
@@ -37,21 +37,18 @@ class UserControllerTest extends TestCase
 
     public function testAdminCanCreate()
     {
-        $user = factory('App\Models\User', 'admin')->create();
+        $user = factory(User::class, 'admin')->create();
 
         $new_user = [
             'email' => 'testcreation@cubeupload.com',
-            'name' => 'Test Created User'
+            'name' => 'Test Created User',
+            'password' => 'password'
         ];
 
         $this->actingAsApiUser($user)->post('/api/users', $new_user);
         $this->assertResponseOk();
 
         $this->seeInDatabase('users', ['email' => 'testcreation@cubeupload.com']);
-
-        $this->refreshApplication();
-
-        $this->post('/api/users', $new_user)->seeStatusCode(401);
     }
 
     public function testUserCannotCreate()
@@ -84,7 +81,8 @@ class UserControllerTest extends TestCase
         $user = factory(User::class)->create();
         factory(User::class)->create();
 
-        $this->actingAsApiUser($user)->get('/api/users/2')->seeStatusCode(403);
+        $this->actingAsApiUser($user)->get('/api/users/2');
+        $this->seeStatusCode(403);
     }
 
     public function testModCanActionOther()

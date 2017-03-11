@@ -3,19 +3,21 @@
 use App\Models\User;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 
-class ApiControllerTest extends TestCase
+class AuthControllerTest extends TestCase
 {
     use DatabaseMigrations;
-    use LoginTrait;
+    use TestHelpersTrait;
 
     /**
      * A basic test example.
      *
      * @return void
      */
-    public function testApiControllerAuth()
+    public function testAuthControllerLogin()
     {
-        factory('App\Models\User', 'admin')->create();
+        $admin = factory('App\Models\User', 'admin')->create();
+
+        print_r($admin);
         
         $this->assertLogin('testadmin@cubeupload.com', 'cube_test_admin');
 

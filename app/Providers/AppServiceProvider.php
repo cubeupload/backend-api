@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Validation\ValidationException;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,6 +15,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        app()->make('api.exception')->register(function (AuthorizationException $e){
+            abort(403, $e->getMessage());
+        });
+        app()->make('api.exception')->register(function (ValidationException $e){
+            abort(412, $e->getMessage());
+        });
     }
 }

@@ -17,24 +17,16 @@ class ImageController extends Controller
         $limit = $request->input('limit', 30);
 
         // Request is asking for all user images (mod/admin)
-        if ($request->input('all_users'))
+        if ($request->input('all'))
         {
-            if ($request->user()->cannot('list-all', Image::class))
-                abort(403);
-            else
-            {
-                return Image::paginate($limit);
-            }
+            $this->authorize('listall', Image::class);
+            return Image::paginate($limit);
         }
         // Normal request for authed user's images.
         else
         {
-            if ($request->user()->cannot('list', Image::class))
-                abort(403);
-            else
-            {
-                return $request->user()->images()->paginate($limit);
-            }
+            $this->authorize('list', Image::class);
+            return $request->user()->images()->paginate($limit);
         }
     }
 
@@ -55,9 +47,12 @@ class ImageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        //
+        $image = Image::findOrFail($id);        
+        $this->authorize($image);
+
+        return $image;
     }
 
     /**
@@ -69,7 +64,11 @@ class ImageController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $image = Image::findOrFail($id);
+        $this->authorize($image);
+
+        $image->update($request->all());
+        return $image;
     }
 
     /**
@@ -80,6 +79,10 @@ class ImageController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $image = Image::findOrFail($id);
+        $this->authorize($image);
+
+        $image->delete();
+        return 'Deleted.';
     }
 }

@@ -2,26 +2,12 @@
 
 use App\Models\User;
 use Laravel\Lumen\Testing\DatabaseMigrations;
-#use LoginTrait;
 
 class AuthTest extends TestCase
 {
     use DatabaseMigrations;
-    use \LoginTrait;
 
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
-    public function testAuthentication()
-    {
-        factory('App\Models\User', 'admin')->create();
-
-        $this->assertLogin('testadmin@cubeupload.com', 'cube_test_admin');
-    }
-
-    public function testCapability()
+    public function testUserLevels()
     {
         factory('App\Models\User', 'admin')->create();
         factory('App\Models\User', 'moderator')->create();

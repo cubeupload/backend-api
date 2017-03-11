@@ -28,7 +28,7 @@ class UserPolicy
      * @param  App\Models\User  $target
      * @return mixed
      */
-    public function view(User $user, User $target)
+    public function show(User $user, User $target)
     {
         if ($user->isModerator())
             return true;
@@ -43,7 +43,7 @@ class UserPolicy
      * @param  App\User  $user
      * @return mixed
      */
-    public function create(User $user)
+    public function store(User $user)
     {
         return $user->isAdmin();
     }
@@ -70,7 +70,7 @@ class UserPolicy
      * @param  App\User  $user
      * @return mixed
      */
-    public function delete(User $user, User $target)
+    public function destroy(User $user, User $target)
     {
         // Non-admins cannot delete users (duh)
         if (!$user->isAdmin())

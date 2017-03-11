@@ -18,7 +18,6 @@ class ImagePolicy
      */
     public function list(User $user)
     {
-        echo "list policy";
         // All users can list their own images. The controller decides what the user is trying to do.
         // This could be expanded to check if the user is banned to refuse service.
         return true;
@@ -30,19 +29,19 @@ class ImagePolicy
      * @param  App\User  $user
      * @return mixed
      */
-    public function listAll(User $user)
+    public function listall(User $user)
     {
         return $user->isModerator();
     }
 
     /**
-     * Determine whether the user can view the image.
+     * Determine whether the user can view a single image.
      *
      * @param  App\User  $user
      * @param  App\Models\Image  $image
      * @return mixed
      */
-    public function view(User $user, Image $image)
+    public function show(User $user, Image $image)
     {
         if ($user->id == $image->creator_id)
             return true;
@@ -70,7 +69,10 @@ class ImagePolicy
      */
     public function update(User $user, Image $image)
     {
-        //
+        if ($user->id === $image->creator_id)
+            return true;
+
+        return $user->isModerator();
     }
 
     /**
@@ -80,8 +82,11 @@ class ImagePolicy
      * @param  App\Image  $image
      * @return mixed
      */
-    public function delete(User $user, Image $image)
+    public function destroy(User $user, Image $image)
     {
-        //
+        if ($user->id === $image->creator_id)
+            return true;
+
+        return $user->isModerator();
     }
 }

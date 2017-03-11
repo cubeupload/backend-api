@@ -17,8 +17,7 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        if ($request->user()->cannot('list', User::class))
-            abort(403);
+        $this->authorize('list', User::class);
         
         $limit = $request->input('limit', 30);
         return response()->json(User::paginate($limit));
@@ -32,12 +31,21 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        if ($request->user()->cannot('create', User::class))
-            abort(403);
+        $this->authorize('store', User::class);
+
+        $this->validate($request, [
+            'name' => 'required',
+            'password' => 'required',
+            'email' => 'unique:users'
+        ]);
 
         $fields = $request->all();
         $fields['registration_ip'] = $request->ip();
-        $new_user = User::create($fields);
+        $new_user = new User($fields);
+
+        // Password isn't fillable so we set it here.
+        $new_user->password = $fields['password'];
+
         $new_user->save();
         return $new_user;
     }
@@ -50,13 +58,9 @@ class UserController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $user = User::find($id);
+        $user = User::findOrFail($id);
 
-        if ($user == null)
-            abort(404);
-
-        if ($request->user()->cannot('view', $user))
-            abort(403);
+        $this->authorize($user);
 
         return $user;
     }
@@ -72,10 +76,10 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
 
-        if ($request->user()->cannot('update', $user))
-            abort(403);
+        $this->authorize($user);
 
         $user->update($request->all());
+
         return $user;
     }
 
@@ -89,8 +93,7 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
 
-        if ($request->user()->cannot('delete', $user))
-            abort(403);
+        $this->authorize($user);
 
         $user->delete();
         return 'Deleted';

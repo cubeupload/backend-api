@@ -1,6 +1,6 @@
 <?php
 
-trait LoginTrait
+trait TestHelpersTrait
 {
     private $token;
 
