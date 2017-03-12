@@ -42,5 +42,6 @@ $api->version('v1', function ($api) {
         // Resource controllers
         $api->resource('/users', 'App\Http\Controllers\UserController');
         $api->resource('/images', 'App\Http\Controllers\ImageController');
+        $api->resource('/albums', 'App\Http\Controllers\AlbumController');
     });
 });

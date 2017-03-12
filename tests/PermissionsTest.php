@@ -3,15 +3,15 @@
 use App\Models\User;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 
-class AuthTest extends TestCase
+class PermissionsTest extends TestCase
 {
     use DatabaseMigrations;
 
     public function testUserLevels()
     {
-        factory('App\Models\User', 'admin')->create();
-        factory('App\Models\User', 'moderator')->create();
-        factory('App\Models\User')->create();
+        factory(User::class, 'admin')->create();
+        factory(User::class, 'moderator')->create();
+        factory(User::class)->create();
 
         $adminUser = User::find(1);
         $this->assertTrue($adminUser->isAdmin());

@@ -7,7 +7,7 @@ trait TestHelpersTrait
     public function assertLogin($email, $password)
     {
         // Assert that the login has succeeded.
-        $this->json('POST', '/api/auth/login', [
+        $this->post('/api/auth/login', [
             'email' => $email,
             'password' => $password
         ])->seeJson([
