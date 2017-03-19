@@ -11,7 +11,7 @@ class AdminUserSeeder extends Seeder
      */
     public function run()
     {
-        $admin_password = str_random(8);
+        $admin_password = env('DEFAULT_ADMIN_PASSWORD', str_random(8));
         DB::table('users')->insert([
             'name' => 'CubeAdmin',
             'email' => 'admin@cubeupload.com',

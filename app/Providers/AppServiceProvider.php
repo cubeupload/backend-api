@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Validation\ValidationException;
 
 class AppServiceProvider extends ServiceProvider
@@ -20,6 +21,9 @@ class AppServiceProvider extends ServiceProvider
         });
         app()->make('api.exception')->register(function (ValidationException $e){
             abort(412, $e->getMessage());
+        });
+        app()->make('api.exception')->register(function (ModelNotFoundException $e){
+            abort(404, 'Not Found.');
         });
     }
 }

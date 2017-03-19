@@ -23,6 +23,22 @@ class AlbumControllerTest extends TestCase
         $this->seeJson(['id' => 1]);
     }
 
+    public function testCreatorCanListOwnWithImages()
+    {
+        $user = factory(User::class)->create();
+        $user->albums()->saveMany(factory(Album::class, 20)->create());
+        $user->albums()->each(function($a){
+            $a->images()->saveMany(factory(Image::class, 30)->create());
+        });
+
+        $this->seeInDatabase('albums', ['id' => 1]);
+        $this->seeInDatabase('images', ['id' => 1]);
+
+        $this->actingAsApiUser($user)->get('/api/albums?withimages=1');
+        $this->assertResponseOk();
+        $this->seeJson(['id' => 1, 'album_id' => 1]);
+    }
+
     public function testUserCannotListAllAlbums()
     {
         $user = factory(User::class)->create();
@@ -40,6 +56,23 @@ class AlbumControllerTest extends TestCase
         $this->actingAsApiUser($mod)->get('/api/albums?all=1');
         $this->assertResponseOk();
         $this->seeJson(['id' => 12]);
+    }
+
+    public function testModCanListWithImages()
+    {
+        $mod = factory(User::class, 'moderator')->create();
+        $user = factory(User::class)->create();
+        $user->albums()->saveMany(factory(Album::class, 20)->create());
+        $user->albums()->each(function($a){
+            $a->images()->saveMany(factory(Image::class, 30)->create());
+        });
+
+        $this->seeInDatabase('albums', ['id' => 1]);
+        $this->seeInDatabase('images', ['id' => 1]);
+
+        $this->actingAsApiUser($mod)->get('/api/albums?withimages=1&all=1');
+        $this->assertResponseOk();
+        $this->seeJson(['id' => 1, 'album_id' => 1]);
     }
 
     public function testUserCanActionOwn()

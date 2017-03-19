@@ -46,6 +46,7 @@ class AlbumPolicy
         if ($user->id == $album->creator_id)
             return true;
 
+
         return $user->isModerator();
     }
 

@@ -15,18 +15,29 @@ class AlbumController extends Controller
     public function index(Request $request)
     {
         $limit = $request->input('limit', 30);
+        $withImages = $request->input('withimages', 0);
 
         // Request is asking for all user albums (mod/admin)
         if ($request->input('all'))
         {
             $this->authorize('listall', Album::class);
-            return Album::paginate($limit);
+            $albums = Album::limit($limit);
+
+            if ($withImages)
+                $albums = $albums->with('images');
+
+            return $albums->paginate($limit);
         }
         // Normal request for authed user's albums.
         else
         {
             $this->authorize('list', Album::class);
-            return $request->user()->albums()->paginate($limit);
+            $albums = $request->user()->albums();
+            
+            if ($withImages)
+                $albums = $albums->with('images');
+
+            return $albums->paginate($limit);
         }
     }
 
@@ -52,11 +63,10 @@ class AlbumController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, $id)
+    public function show($id)
     {
-        $album = Album::findOrFail($id);        
+        $album = Album::with('images')->whereId($id)->firstOrFail();
         $this->authorize($album);
-
         return $album;
     }
 

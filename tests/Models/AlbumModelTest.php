@@ -38,4 +38,16 @@ class AlbumModelTest extends TestCase
 
         $this->assertEquals(1, $image->album_id);
     }
+
+    public function testSlugGeneration()
+    {
+        $album = factory(Album::class)->make();
+        $album->name = 'This is my album';
+
+        $this->assertEquals('this-is-my-album', $album->slug);
+
+        $album->save();
+
+        $this->seeInDatabase('albums', ['slug' => 'this-is-my-album']);
+    }
 }
