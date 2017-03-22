@@ -100,7 +100,7 @@ $app->middleware([
 ]);
 
 $app->routeMiddleware([
-    // 'auth' => App\Http\Middleware\Authenticate::class,
+    'bancheck' => App\Http\Middleware\BanCheck::class,
 ]);
 
 /*

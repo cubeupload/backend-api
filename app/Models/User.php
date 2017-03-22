@@ -38,6 +38,10 @@ class User extends Model implements
         'remember_token',
     ];
 
+    protected $casts = [
+        'metadata' => 'array'
+    ];
+
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *
@@ -55,7 +59,9 @@ class User extends Model implements
      */
     public function getJWTCustomClaims()
     {
-        return [];
+        return [
+            'name' => $this->name
+        ];
     }
 
     /**
@@ -139,11 +145,6 @@ class User extends Model implements
     public function messages()
     {
         return $this->hasMany('App\Models\Message', 'creator_id');
-    }
-
-    public function getMetadataAttribute($metadata)
-    {
-        return json_decode($metadata);
     }
 
     public function setPasswordAttribute($password)

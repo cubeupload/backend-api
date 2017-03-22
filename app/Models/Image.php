@@ -20,4 +20,17 @@ class Image extends Model
     {
         return $this->belongsTo('App\Models\Album');
     }
+
+    public function getImageUrlAttribute()
+    {
+        return env('IMAGE_SERVER') . '/' . $this->filename;
+    }
+
+    public function getThumbUrlAttribute()
+    {
+        $search = ['{hostname}', '{filename}'];
+        $replace = [env('IMAGE_SERVER'), $this->filename];
+
+        return str_replace($search, $replace, env('THUMB_FORMAT'));
+    }
 }

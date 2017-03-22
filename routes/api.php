@@ -20,7 +20,7 @@ $api->version('v1', function ($api) {
     ]);
 
     $api->group([
-        'middleware' => 'api.auth',
+        'middleware' => ['bancheck', 'api.auth', 'bancheck'],
     ], function ($api) {
         $api->get('/', [
             'uses' => 'App\Http\Controllers\APIController@getIndex',

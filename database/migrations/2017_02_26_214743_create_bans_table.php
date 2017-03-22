@@ -18,9 +18,10 @@ class CreateBansTable extends Migration
             $table->integer('creator_id');
             $table->string('reason', 200);
             $table->string('notes', 200);
-            $table->enum('type', ['ip', 'user']);
+            $table->boolean('enabled')->default(false);
             $table->integer('recipient_id');
             $table->string('banned_ip', 16);
+            $table->datetime('expires_at');
             $table->timestamps();
             $table->softDeletes();
         });
