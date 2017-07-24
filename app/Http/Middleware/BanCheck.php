@@ -25,7 +25,7 @@ class BanCheck
     public function handle($request, Closure $next)
     {
         $ban = $this->getBanMatchingRequest($request);
-        
+
         if ($ban != null)
             return new JsonResponse([
             'message' => 'Request forbidden due to a ban being in place.',

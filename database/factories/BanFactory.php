@@ -2,7 +2,7 @@
 
 $factory->define('App\Models\Ban', function($faker){
     return [
-        'reason' => 'Misconduct',
-        'notes' => 'Uploading bad content'
+        'reason' => 'Test Ban',
+        'notes' => 'This is a test ban'
     ];
 });

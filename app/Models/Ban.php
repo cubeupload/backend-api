@@ -18,6 +18,9 @@ class Ban extends Model
 
     public function scopeActive($query)
     {
-        return $query->where('enabled', true)->where('expires_at', '>', date('Y-m-d H:i:s'));
+        return $query->where('enabled', true)->where(function($query){
+            $query->where('expires_at', '>', date('Y-m-d H:i:s'))
+            ->orWhere('expires_at', '0000-00-00 00:00:00');
+        });
     }
 }
