@@ -19,6 +19,6 @@ class AuthControllerTest extends TestCase
         
         $this->assertLogin('testadmin@cubeupload.com', 'cube_test_admin');
 
-        $this->get('/api')->assertResponseOk();
+        $this->actingAsApiUser($admin)->get('/api')->assertResponseOk();
     }
 }

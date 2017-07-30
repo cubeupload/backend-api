@@ -19,6 +19,11 @@ class Album extends Model
         return $this->hasMany('App\Models\Image');
     }
 
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = $value;
+        $this->attributes['slug'] = str_slug($value, '-');
+    }
     public function getSlugAttribute()
     {
         return str_slug($this->name, '-');

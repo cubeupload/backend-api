@@ -14,11 +14,13 @@ class BanCheckTest extends TestCase
         $ban = factory(Ban::class)->create();
         $ban->banned_ip = '127.0.0.1';
         $ban->reason = 'Test Ban';
+        $ban->enabled = true;
         $ban->save();
 
         $ban_ipv6 = factory(Ban::class)->create();
         $ban_ipv6->banned_ip = '::1';
         $ban_ipv6->reason = 'Test Ban';
+        $ban_ipv6->enabled = true;
         $ban_ipv6->save();
 
         $this->get('/api/images');
