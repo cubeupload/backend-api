@@ -101,6 +101,7 @@ $app->middleware([
 
 $app->routeMiddleware([
     'bancheck' => App\Http\Middleware\BanCheck::class,
+    'uploadcheck' => App\Http\Middleware\UploadCheck::class
 ]);
 
 /*

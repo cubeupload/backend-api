@@ -19,6 +19,13 @@ $api->version('v1', function ($api) {
         'uses' => 'App\Http\Controllers\Auth\AuthController@postLogin',
     ]);
 
+    $api->post('/upload/guest',[
+        'as' => 'api.upload.guest',
+        'uses' => 'App\Http\Controllers\UploadController@postUploadGuest',
+        'middleware' => ['bancheck','uploadcheck']
+    ]);
+
+
     $api->group([
         'middleware' => ['bancheck', 'api.auth', 'bancheck'],
     ], function ($api) {
@@ -43,5 +50,11 @@ $api->version('v1', function ($api) {
         $api->resource('/users', 'App\Http\Controllers\UserController');
         $api->resource('/images', 'App\Http\Controllers\ImageController');
         $api->resource('/albums', 'App\Http\Controllers\AlbumController');
+
+        $api->post('/upload/authed',[
+        'as' => 'api.upload.authed',
+        'uses' => 'App\Http\Controllers\UploadController@postUploadAuthed',
+        'middleware' => 'uploadcheck'
+    ]);
     });
 });
