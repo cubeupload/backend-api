@@ -5,7 +5,7 @@ namespace App\Models;
 
 use App\Models\Traits\CreatorRelation;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\UploadedFile;
+use Illuminate\Http\Request;
 
 
 class Image extends Model
@@ -35,10 +35,13 @@ class Image extends Model
         return str_replace($search, $replace, env('THUMB_FORMAT'));
     }
 
-    public static function fromUpload(UploadedFile $file)
+    public static function fromUploadRequest(Request $request)
     {
+        $file = $request->file('img');
+
         $newImage = new static();
         $newImage->filename = $file->getClientOriginalName();
+        $newImage->uploader_ip = $request->ip();
         return $newImage;
     }
 }

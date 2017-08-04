@@ -12,10 +12,7 @@ class UploadController extends Controller
     // create a DB entry and return the info to the uploader.
     public function postUploadGuest(Request $request)
     {
-        $file = $request->file('img');
-        
-        $image = Image::fromUpload($file);
-        $image->uploader_ip = $request->ip();
+        $image = Image::fromUploadRequest($request);
         $image->save();
 
         return $image;
@@ -23,7 +20,10 @@ class UploadController extends Controller
 
     public function postUploadAuthed(Request $request)
     {
+        $image = Image::fromUploadRequest($request);
+        $image->save();
+        $request->user()->images()->save($image);
 
+        return $image;
     }
-
 }
