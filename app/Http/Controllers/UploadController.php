@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Image;
 
 class UploadController extends Controller
 {
@@ -12,7 +13,12 @@ class UploadController extends Controller
     public function postUploadGuest(Request $request)
     {
         $file = $request->file('img');
-        return $file;
+        
+        $image = Image::fromUpload($file);
+        $image->uploader_ip = $request->ip();
+        $image->save();
+
+        return $image;
     }
 
     public function postUploadAuthed(Request $request)
