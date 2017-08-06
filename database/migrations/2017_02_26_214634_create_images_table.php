@@ -20,6 +20,8 @@ class CreateImagesTable extends Migration
             $table->string('name', 50);
             $table->string('description', 200);
             $table->string('filename', 100);
+            $table->integer('filesize');
+            $table->string('filehash', 32);
             $table->string('uploader_ip', 16);
             $table->timestamps();
             $table->softDeletes();

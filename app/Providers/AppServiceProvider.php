@@ -7,8 +7,17 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Validation\ValidationException;
 
+use App\Models\Image;
+
 class AppServiceProvider extends ServiceProvider
 {
+    public function boot()
+    {
+        Image::deleted(function ($img){
+            $img->deleteFileIfOrphan();
+        });
+    }
+
     /**
      * Register any application services.
      *

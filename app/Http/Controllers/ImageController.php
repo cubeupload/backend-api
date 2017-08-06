@@ -82,7 +82,7 @@ class ImageController extends Controller
         $image = Image::findOrFail($id);
         $this->authorize($image);
 
-        $image->delete();
-        return 'Deleted.';
+        return ['deleted' => $image->delete()];
+        //return 'Deleted.';
     }
 }

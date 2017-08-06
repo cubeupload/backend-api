@@ -59,7 +59,12 @@ $app = new Laravel\Lumen\Application(
     realpath(__DIR__.'/../')
 );
 
+$app->configure('filesystems');
+
 $app->withFacades();
+
+if (!class_exists('Storage'))
+    class_alias('Illuminate\Support\Facades\Storage', 'Storage');
 
 $app->withEloquent();
 
@@ -123,6 +128,8 @@ $app->register(Zeek\LumenDingoAdapter\Providers\LumenDingoAdapterServiceProvider
 
 // Lumen Generator disabled it on production if you want
 $app->register(Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
+
+$app->register(Illuminate\Filesystem\FilesystemServiceProvider::class);
 
 // Register our providers after the vendor providers so we can make use of them.
 $app->register(App\Providers\AppServiceProvider::class);

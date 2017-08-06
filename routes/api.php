@@ -21,7 +21,7 @@ $api->version('v1', function ($api) {
 
     $api->post('/upload/guest',[
         'as' => 'api.upload.guest',
-        'uses' => 'App\Http\Controllers\UploadController@postUploadGuest',
+        'uses' => 'App\Http\Controllers\UploadController@postUpload',
         'middleware' => ['bancheck','uploadcheck']
     ]);
 
@@ -53,7 +53,7 @@ $api->version('v1', function ($api) {
 
         $api->post('/upload/authed',[
         'as' => 'api.upload.authed',
-        'uses' => 'App\Http\Controllers\UploadController@postUploadAuthed',
+        'uses' => 'App\Http\Controllers\UploadController@postUpload',
         'middleware' => 'uploadcheck'
     ]);
     });
