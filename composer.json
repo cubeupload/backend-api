@@ -8,7 +8,9 @@
         "php": ">=5.6.4",
         "laravel/lumen-framework": "5.3.*",
         "vlucas/phpdotenv": "~2.2",
-        "krisanalfa/lumen-dingo-adapter": "^0.0.2"
+        "krisanalfa/lumen-dingo-adapter": "^0.0.2",
+        "league/flysystem": " ~1.0",
+        "league/flysystem-aws-s3-v3": "^1.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
