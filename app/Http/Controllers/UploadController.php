@@ -12,8 +12,6 @@ class UploadController extends Controller
     // create a DB entry and return the info to the uploader.
     public function postUpload(Request $request)
     {
-        $image = Image::fromUploadRequest($request);
-
-        return $image;
+        return Image::fromUploadRequest($request);
     }
 }

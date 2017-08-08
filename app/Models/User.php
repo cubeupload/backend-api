@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use \Gate;
+use Validator;
 
 use App\Models\Traits\CreatorRelation;
 
@@ -39,7 +40,18 @@ class User extends Model implements
     ];
 
     protected $casts = [
-        'metadata' => 'array'
+        'options' => 'array'
+    ];
+
+    protected $defaultOptions = [
+        'short_url' => 'bitly',
+        'retain_filenames' => true,
+        'embed_html_full' => true,
+        'embed_html_thumb' => true,        
+        'embed_markdown_full' => true,
+        'embed_markdown_thumb' => true,
+        'embed_forum_full' => true,
+        'embed_forum_thumb' => true,
     ];
 
     /**
@@ -150,5 +162,30 @@ class User extends Model implements
     public function setPasswordAttribute($password)
     {
         $this->attributes['password'] = app('hash')->make($password);
+    }
+
+    public function setOptionDefaults()
+    {
+        $this->options = $this->defaultOptions;
+    }
+
+    /**
+     * Passes an array of key/value options to update for this user.
+     * The key must already exist in the user's options array, otherwise it'll be ignored.
+     */
+    public function updateOptions($new_options)
+    {          
+        $current_options = $this->options ?? $this->defaultOptions;
+
+        foreach ($current_options as $key => $value)
+        {
+            if (array_key_exists($key, $new_options))
+                $current_options[$key] = $new_options[$key];
+        }
+
+        $this->options = $current_options;
+        $this->save();
+
+        return $this->options;
     }
 }

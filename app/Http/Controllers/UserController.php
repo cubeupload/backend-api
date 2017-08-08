@@ -98,4 +98,18 @@ class UserController extends Controller
         $user->delete();
         return 'Deleted';
     }
+
+    public function getSettings(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        $this->authorize('show', $user);
+        return $user->options;
+    }
+
+    public function putSettings(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        $this->authorize('update', $user);
+        return $user->updateOptions($request->all());
+    }
 }

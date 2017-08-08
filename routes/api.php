@@ -51,6 +51,8 @@ $api->version('v1', function ($api) {
         $api->resource('/images', 'App\Http\Controllers\ImageController');
         $api->resource('/albums', 'App\Http\Controllers\AlbumController');
 
+        $api->put('/users/{id}/settings', 'App\Http\Controllers\UserController@putSettings');
+
         $api->post('/upload/authed',[
         'as' => 'api.upload.authed',
         'uses' => 'App\Http\Controllers\UploadController@postUpload',

@@ -16,7 +16,7 @@ class CreateUsersAddonFields extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->string('registration_ip', 16)->nullable()->after('password');
             $table->integer('access_level')->default(1)->after('registration_ip');
-            $table->text('metadata')->after('access_level');
+            $table->text('options')->after('access_level');
             $table->softDeletes();
         });
     }
@@ -31,8 +31,7 @@ class CreateUsersAddonFields extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('registration_ip');
             $table->dropColumn('access_level');
-            $table->dropColumn('metadata');
-
+            $table->dropColumn('options');
         });
     }
 }

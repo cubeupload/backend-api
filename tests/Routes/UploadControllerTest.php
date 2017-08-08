@@ -23,7 +23,6 @@ class UploadControllerTest extends TestCase
         $this->assertResponseOk();
 
         $this->seeJson([
-           'filename' => 'testimage.png',
            'id' => 1,
            'uploader_ip' => '127.0.0.1'
         ]);
@@ -45,6 +44,28 @@ class UploadControllerTest extends TestCase
            'uploader_ip' => '127.0.0.1',
            'creator_id' => 1
         ]);
+    }
+
+    public function testAuthedUploadSuccessRandomFilename()
+    {
+        $user = factory(User::class)->create();
+        $user->updateOptions(['retain_filenames' => false]);
+
+        $path = __DIR__.'/../stubs/testimage.png';
+
+        $file = new UploadedFile($path, 'testimage.png', filesize($path), 'image/png', null, true);
+        $this->actingAsApiUser($user)->call('POST', '/api/upload/authed', [], [], ['img' => $file], ['Content-Type' => 'multipart/form-data']);
+
+        $this->assertResponseOk();
+
+        $this->seeJson([
+           'id' => 1,
+           'uploader_ip' => '127.0.0.1',
+           'creator_id' => 1
+        ]);
+
+        $json = (array)json_decode($this->response->content());
+        $this->assertNotEquals('testimage.png', $json['image']->filename);
     }
 
     public function testGuestUploadForbiddenFiletype()

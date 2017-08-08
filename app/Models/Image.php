@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Storage;
 
+use App\Jobs\S3FileUploadJob;
+
 
 class Image extends Model
 {
@@ -16,6 +18,11 @@ class Image extends Model
     protected $fillable = [
         'name',
         'description'
+    ];
+
+    protected $appends = [
+        'image_url',
+        'thumb_url'
     ];
 
     public function album()
@@ -41,14 +48,25 @@ class Image extends Model
         $file = $request->file('img');
 
         $newImage = new static();
-        $newImage->filename = $file->getClientOriginalName();
         $newImage->uploader_ip = $request->ip();
         $newImage->uploadFile($file);
-        $newImage->save();
 
         if ($request->user())
-            $request->user()->images()->save($newImage);
+        {
+            if ($request->user()->options['retain_filenames'] === false)
+                $newImage->filename = str_random(6) .  '.' . $file->guessExtension();
+            else
+                $newImage->filename = $file->getClientOriginalName();
 
+            $newImage->save();
+            $request->user()->images()->save($newImage);
+        }
+        else
+        {
+            $newImage->filename = str_random(6) . '.' . $file->guessExtension();
+            $newImage->save();
+        }
+        
         return $newImage;
     }
 
@@ -57,12 +75,17 @@ class Image extends Model
         $this->filehash = md5_file($file);
         $this->filesize = filesize($file);
 
+        Storage::put(split_to_path($this->filehash), file_get_contents($file));
+
+        dispatch(new S3FileUploadJob($this->filehash));
+        /*
         if (!Storage::disk('s3')->has(split_to_path($this->filehash)))
         {
             $stream = fopen($file, 'r+');
             Storage::disk('s3')->writeStream(split_to_path($this->filehash), $stream);
             fclose($stream);
         }
+        */
     }
 
     /*
